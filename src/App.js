@@ -9,7 +9,11 @@ class App extends React.Component {
         this.state = {
             todoData: [],
             filter: '',
+            value: '',
         };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     getData(){
@@ -37,6 +41,26 @@ class App extends React.Component {
         this.setState({ filter: false});
     }
 
+    handleChange(event) {
+        this.setState({value: event.target.value});
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        if(this.state.value === ''){
+            //Afficher un message d'erreur
+        } else{
+            let item = {
+                'label': this.state.value,
+                'complete': false
+            };
+            this.setState({
+                value: '',
+                todoData: [...this.state.todoData, item]
+            });
+        }
+    }
+
     componentWillMount(){
         this.getData();
     }
@@ -49,6 +73,13 @@ class App extends React.Component {
     return (
       <div>
           <p>TodoList React.js</p>
+
+          <form onSubmit={this.handleSubmit}>
+              <label htmlFor="">Nom :</label>
+              <input type="text" value={this.state.value} onChange={this.handleChange}/>
+              <input type="submit" value="Ajouter"/>
+          </form>
+
           <Items items={filterData} />
 
           <p>Filtres:</p>
