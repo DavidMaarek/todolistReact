@@ -50,7 +50,7 @@ class App extends React.Component {
       <div>
           <p>TodoList React.js</p>
           <Items items={filterData} />
-          <br/>
+
           <p>Filtres:</p>
           <button onClick={() => this.filterAll()}>Tous</button>
           <button onClick={() => this.filterDone()}>Terminés</button>
