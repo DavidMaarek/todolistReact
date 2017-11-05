@@ -1,27 +1,40 @@
 import React from 'react';
 import Items from './components/itemList'
+import './App.css'
 
 class App extends React.Component {
 
     constructor(props){
         super(props);
         this.state = {
-            todoData: []
+            todoData: [],
+            filter: '',
         };
     }
 
     getData(){
         fetch('https://api.myjson.com/bins/9l2ez')
             .then(function(response){
-                console.log(response);
                 return response.json();
             })
             .then(response => {
                 this.setState({
-                    todoData: response
+                    todoData: response.todos
                 });
-                console.log(this.state.todoData.todos);
             })
+    }
+
+
+    filterAll(){
+        this.setState({ filter: ''});
+    }
+
+    filterDone(){
+        this.setState({ filter: true});
+    }
+
+    filterTodo(){
+        this.setState({ filter: false});
     }
 
     componentWillMount(){
@@ -29,10 +42,19 @@ class App extends React.Component {
     }
 
   render() {
+      let filterData = this.state.todoData;
+      if (this.state.filter !== '') {
+          filterData = this.state.todoData.filter((item) => item.complete === this.state.filter );
+      }
     return (
       <div>
-          <p>Fetch API</p>
-          <Items items={this.state.todoData.todos} />
+          <p>TodoList React.js</p>
+          <Items items={filterData} />
+          <br/>
+          <p>Filtres:</p>
+          <button onClick={() => this.filterAll()}>Tous</button>
+          <button onClick={() => this.filterDone()}>Terminés</button>
+          <button onClick={() => this.filterTodo()}>À faire</button>
       </div>
     );
   }
